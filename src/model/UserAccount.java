@@ -6,19 +6,19 @@ public class UserAccount {
 	private String userName;
 	private String password;
 	private String profilePhotoUrl;
-	private String gender;
+	private Gender gender;
 	private ArrayList<String> carrers;
 	private String birthday;
-	private String favBrowser;
+	private Browser favBrowser;
 	
 	public UserAccount(String us, String pass, String prof, String gen, ArrayList<String> car, String bir, String fav) {
 		userName = us;
 		password = pass;
 		profilePhotoUrl = prof;
-		gender = gen;
+		gender = Gender.valueOf(gen);
 		carrers = car;
 		birthday = bir;
-		favBrowser = fav;
+		favBrowser = Browser.valueOf(fav);
 	}
 	
 	public String getUserName() {
@@ -33,7 +33,7 @@ public class UserAccount {
 		return profilePhotoUrl;
 	}
 	
-	public String getGender () {
+	public Gender getGender () {
 		return gender;
 	}
 	
@@ -45,7 +45,7 @@ public class UserAccount {
 		return birthday;
 	}
 	
-	public String getFavoriteBrowser() {
+	public Browser getFavoriteBrowser() {
 		return favBrowser;
 	}
 }

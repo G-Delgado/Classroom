@@ -25,14 +25,14 @@
       <TextField fx:id="createUsernameText" layoutX="226.0" layoutY="74.0" />
       <TextField fx:id="createPasswordText" layoutX="225.0" layoutY="117.0" />
       <TextField fx:id="profileUrl" editable="false" layoutX="225.0" layoutY="152.0" />
-      <RadioButton layoutX="212.0" layoutY="209.0" mnemonicParsing="false" text="Male" />
-      <RadioButton layoutX="271.0" layoutY="209.0" mnemonicParsing="false" text="Female" />
-      <RadioButton layoutX="348.0" layoutY="209.0" mnemonicParsing="false" text="Other" />
+      <RadioButton fx:id="maleBtn" layoutX="212.0" layoutY="209.0" mnemonicParsing="false" text="Male" />
+      <RadioButton fx:id="femaleBtn" layoutX="271.0" layoutY="209.0" mnemonicParsing="false" text="Female" />
+      <RadioButton fx:id="otherBtn" layoutX="348.0" layoutY="209.0" mnemonicParsing="false" text="Other" />
       <CheckBox fx:id="softCheck" layoutX="211.0" layoutY="240.0" mnemonicParsing="false" text="Software Engineering" />
       <CheckBox fx:id="telCheck" layoutX="208.0" layoutY="269.0" mnemonicParsing="false" text="Telematic Engineering" />
       <CheckBox fx:id="indCheck" layoutX="209.0" layoutY="296.0" mnemonicParsing="false" text="Industrial Engineering" />
       <DatePicker fx:id="datePicker" layoutX="212.0" layoutY="323.0" />
-      <ComboBox layoutX="211.0" layoutY="367.0" prefWidth="150.0" />
+      <ComboBox fx:id="favBrowser" layoutX="211.0" layoutY="367.0" prefWidth="150.0" />
       <Button layoutX="200.0" layoutY="422.0" mnemonicParsing="false" onAction="#loadLogin" text="Sign In" />
       <Button layoutX="282.0" layoutY="422.0" mnemonicParsing="false" onAction="#createAccount" text="Create account" />
       <Label layoutX="134.0" layoutY="78.0" text="Username:" />
@@ -42,6 +42,6 @@
       <Label layoutX="152.0" layoutY="240.0" text="Career:" />
       <Label layoutX="139.0" layoutY="327.0" text="Birthday:" />
       <Label layoutX="105.0" layoutY="371.0" text="Favorite Browser:" />
-      <Button layoutX="377.0" layoutY="152.0" mnemonicParsing="false" text="Browse" />
+      <Button fx:id="browseBtn" layoutX="377.0" layoutY="152.0" mnemonicParsing="false" onAction="#searchFile" text="Browse" />
    </children>
 </Pane>

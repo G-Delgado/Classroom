@@ -1,18 +1,27 @@
 package ui;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Classroom;
 import model.UserAccount;
@@ -21,7 +30,7 @@ public class ClassroomGUI {
 	
 	private Classroom classroom;
 	
-	// Main pane fxml
+	// Main pane
 	
 	@FXML
 	private Pane mainPane;
@@ -41,6 +50,9 @@ public class ClassroomGUI {
 	
 	@FXML
 	private TextField createPasswordText;
+	
+	@FXML
+	private Button browseBtn;
 	
 	@FXML
 	private TextField profileUrl;
@@ -66,14 +78,25 @@ public class ClassroomGUI {
 	@FXML
 	private DatePicker datePicker;
 	
+	@FXML
+	private ComboBox<String> favBrowser;
+	
 	// List controls
 	
 	public ClassroomGUI(Classroom cr) {
 		classroom = cr;
 	}
 	
+	/*
+	 * 
+	 * 
+	 * 	HACER LOS ALERT Y UNA VIEW DE UN "ABOUT" ;)
+	 * 
+	 * 
+	 * */
+	
 	@FXML
-	public void loadLogin() throws IOException {
+	public void loadLogin() throws IOException { // CAMBIAR EL TAMAÑO DEL WINDOW AL VOLVER A RECARGAR ESTA STAGE
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
 		fxmlLoader.setController(this);
 		Parent login = fxmlLoader.load();
@@ -83,7 +106,7 @@ public class ClassroomGUI {
 	}
 	
 	@FXML
-	public void login(ActionEvent event) throws IOException {
+	public void login(ActionEvent event) throws IOException { // Validar los alert cuando se equivoque
 		String userName = usernameField.getText();
 		String password = passwordField.getText();
 		boolean found = false;
@@ -115,14 +138,14 @@ public class ClassroomGUI {
 	public void createAccount(ActionEvent event) throws IOException {
 		// Nada de lo que está abajo debería hacerse al momento de darle al botón, si no al cargar el fxml
 		String usernameText = createUsernameText.getText();
+		System.out.println(usernameText);
 		String passwordText = createPasswordText.getText();
+		System.out.println(passwordText);
+		String profilePath = profileUrl.getText();
+		System.out.println("El path de la foto de perfil es: " + profilePath);
 		System.out.println(datePicker.getValue()); // Hay que validar cuando sea NULL ------- asasas sasasa/////////
 		String date = datePicker.getValue() + "";
 		System.out.println("La fecha es: " + date);
-		final ToggleGroup group = new ToggleGroup();
-		maleBtn.setToggleGroup(group);
-		femaleBtn.setToggleGroup(group);
-		otherBtn.setToggleGroup(group);
 		ArrayList<String> careers = new ArrayList<String>();
 		if (softCheck.isSelected()) {
 			careers.add("Software Engineering");
@@ -134,13 +157,51 @@ public class ClassroomGUI {
 			careers.add("Industrial Engineering");
 		}
 		System.out.println(careers);
+		String gender = "";
+		if (maleBtn.isSelected()) {
+			gender = "Male";
+		} else if (femaleBtn.isSelected()) {
+			gender = "Female";
+		} else if (otherBtn.isSelected()) {
+			gender = "Other";
+		}
+		gender = gender.replaceAll(" ", "").toUpperCase();
+		System.out.println("Gender: " + gender);
 		System.out.println("Cuenta creada exitosamente!");
+		classroom.addStudent(usernameText, passwordText, profilePath, gender, careers, date, "BRAVE");
 		loadList();
 	
 	}
 	
+	public void searchFile(ActionEvent event) {
+		String path = "";
+		FileChooser fileChooser = new FileChooser();
+		Stage stage = (Stage) mainPane.getScene().getWindow();
+		File file = fileChooser.showOpenDialog(stage);
+		if (file != null) {
+			path = file.getPath();
+			//openFile(file);
+		}
+		profileUrl.setText(path);
+		System.out.println(path);
+	}
+	
+	public void openFile(File file) { // Unnecessary --------------
+		final Desktop desktop = Desktop.getDesktop();
+		try {
+            desktop.open(file);
+            System.out.println(file.getName());
+            System.out.println(file.getPath());
+        } catch (IOException ex) {
+            Logger.getLogger(
+                FileChooser.class.getName()).log(
+                    Level.SEVERE, null, ex
+                );
+        }
+	}
+	
 	@FXML
-	public void loadRegister(ActionEvent event) throws IOException {
+	public void loadRegister(ActionEvent event) throws IOException { 
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("register.fxml"));
 		fxmlLoader.setController(this);
 		Parent register = fxmlLoader.load();
@@ -149,11 +210,25 @@ public class ClassroomGUI {
 		stage.setHeight(500);
 		stage.setWidth(582);
 		// ----------------------- Preparing Stuff -----------------------
+		final ToggleGroup group = new ToggleGroup();
+		maleBtn.setToggleGroup(group);
+		femaleBtn.setToggleGroup(group);
+		otherBtn.setToggleGroup(group);
+		ObservableList<String> options = FXCollections.observableArrayList(
+				"Firefox",
+				"Chrome",
+				"Edge",
+				"Safari",
+				"Opera",
+				"Tor",
+				"Brave"
+				);
+		favBrowser.setItems(options);
 
 	}
 	
 	@FXML
-	public void loadList() throws IOException {
+	public void loadList() throws IOException { // CAMBIAR EL TAMAÑO DEL WINDOW AL VOLVER A RECARGAR ESTE STAGE
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("account-list.fxml"));
 		fxmlLoader.setController(this);
 		Parent register = fxmlLoader.load();

@@ -7,21 +7,21 @@ public class UserAccount {
 	private String password;
 	private String profilePhotoUrl;
 	private Gender gender;
-	private ArrayList<String> carrers;
+	private ArrayList<String> careers;
 	private String birthday;
-	private Browser favBrowser;
+	private Browser browser;
 	
 	public UserAccount(String us, String pass, String prof, String gen, ArrayList<String> car, String bir, String fav) {
 		userName = us;
 		password = pass;
 		profilePhotoUrl = prof;
 		gender = Gender.valueOf(gen);
-		carrers = car;
+		careers = car;
 		birthday = bir;
-		favBrowser = Browser.valueOf(fav);
+		browser = Browser.valueOf(fav);
 	}
 	
-	public String getUserName() {
+	public String getUsername() {
 		return userName;
 	}
 	
@@ -37,15 +37,15 @@ public class UserAccount {
 		return gender;
 	}
 	
-	public ArrayList<String> getCarrers() {
-		return carrers;
+	public ArrayList<String> getCareers() {
+		return careers;
 	}
 	
 	public String getBirthday() {
 		return birthday;
 	}
 	
-	public Browser getFavoriteBrowser() {
-		return favBrowser;
+	public Browser getBrowser() {
+		return browser;
 	}
 }

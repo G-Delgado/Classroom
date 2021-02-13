@@ -10,13 +10,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -80,6 +87,30 @@ public class ClassroomGUI {
 	
 	// List controls
 	
+	@FXML
+	private Label usernameLabel;
+	
+	@FXML
+	private ImageView userImage;
+	
+	@FXML
+	private TableView<UserAccount> accountsTable;
+	
+	@FXML
+	private TableColumn<UserAccount, String> tcUsername;
+	
+	@FXML
+	private TableColumn<UserAccount, String> tcGender;
+	
+	@FXML
+	private TableColumn<UserAccount, String> tcCareer;
+	
+	@FXML
+	private TableColumn<UserAccount, String> tcBirthday;
+	
+	@FXML
+	private TableColumn<UserAccount, String> tcBrowser;
+	
 	public ClassroomGUI(Classroom cr) {
 		classroom = cr;
 	}
@@ -104,25 +135,27 @@ public class ClassroomGUI {
 	}
 	
 	@FXML
-	public void login(ActionEvent event) throws IOException { // Validar los alert cuando se equivoque
-		String userName = usernameField.getText();
+	public void login(ActionEvent event) throws IOException { // Validate the alert when it is wrong
+		String username = usernameField.getText();
 		String password = passwordField.getText();
+		String photoPath = "";
 		boolean found = false;
 		
-		ArrayList<UserAccount> studentList = classroom.getClassroom(); // This probably shouldnt go in here, or not the type we need
+		ArrayList<UserAccount> studentList = classroom.getAccounts(); // This probably should not go in here, or not the type we need
 		
 		if (studentList.size() == 0) {
 			System.out.println("Mano, cho tonto, nisiquiera hay cuentas creadas");
 		} else {
 			for (int i = 0; i < studentList.size() && !found; i++) {
-				if (userName.equals(studentList.get(i).getUserName()) && password.equals(studentList.get(i).getPassword())) {
+				if (username.equals(studentList.get(i).getUsername()) && password.equals(studentList.get(i).getPassword())) {
 					System.out.println("LLEGUE AQUI LOCO!!");
+					photoPath = studentList.get(i).getProfilePhotoUrl();
 					found = true;
 				}
 			}
 			
 			if (found) {
-				loadList();
+				loadList(username, photoPath);
 			} else {
 				// Validar datos erroneos
 				// Validar Strings vacios
@@ -136,14 +169,10 @@ public class ClassroomGUI {
 	public void createAccount(ActionEvent event) throws IOException {
 		// Nada de lo que está abajo debería hacerse al momento de darle al botón, si no al cargar el fxml
 		String usernameText = createUsernameText.getText();
-		System.out.println(usernameText);
 		String passwordText = createPasswordText.getText();
-		System.out.println(passwordText);
 		String profilePath = profileUrl.getText();
-		System.out.println("El path de la foto de perfil es: " + profilePath);
 		System.out.println(datePicker.getValue()); // Hay que validar cuando sea NULL ------- asasas sasasa/////////
 		String date = datePicker.getValue() + "";
-		System.out.println("La fecha es: " + date);
 		ArrayList<String> careers = new ArrayList<String>();
 		if (softCheck.isSelected()) {
 			careers.add("Software Engineering");
@@ -154,7 +183,6 @@ public class ClassroomGUI {
 		if (indCheck.isSelected()) {
 			careers.add("Industrial Engineering");
 		}
-		System.out.println(careers);
 		String gender = "";
 		if (maleBtn.isSelected()) {
 			gender = "Male";
@@ -164,15 +192,24 @@ public class ClassroomGUI {
 			gender = "Other";
 		}
 		gender = gender.replaceAll(" ", "").toUpperCase();
-		System.out.println("Gender: " + gender);
-		System.out.println("Cuenta creada exitosamente!");
 		String favoriteBrowser = favBrowser.getValue();
 		favoriteBrowser = favoriteBrowser.replaceAll(" ", "").toUpperCase();
-		System.out.println(favBrowser.getValue());
-		classroom.addStudent(usernameText, passwordText, profilePath, gender, careers, date, favoriteBrowser);
 		// NECESITO VALIDAR LO QUE PASA CUANDO FALTA ALGUN DATO
-		loadList();
-		// Al loadList podemos pasarle dos parametros que son el nombre usuario y la foto de perfil.
+		if (usernameText.equals("") || passwordText.equals("") || profilePath.equals("") || date == null || careers.size() == 0 || gender.equals("") || favoriteBrowser.equals("")) {
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setHeaderText(null);
+			alert.setTitle("Validation Error");
+			alert.setContentText("You must fill each field in the form");
+			alert.showAndWait();
+		} else {
+			classroom.addStudent(usernameText, passwordText, profilePath, gender, careers, date, favoriteBrowser);
+			loadList(usernameText, profilePath);
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.setHeaderText(null);
+			alert.setTitle("Account created");
+			alert.setContentText("The new account has been created");
+			alert.showAndWait();
+		}
 		
 	
 	}
@@ -232,10 +269,32 @@ public class ClassroomGUI {
 	}
 	
 	@FXML
-	public void loadList() throws IOException { // CAMBIAR EL TAMAÑO DEL WINDOW AL VOLVER A RECARGAR ESTE STAGE
+	public void initializeTableView() {
+		ObservableList<UserAccount> accounts;
+		accounts = FXCollections.observableArrayList(classroom.getAccounts());
+		
+		accountsTable.setItems(accounts);
+		tcUsername.setCellValueFactory(new PropertyValueFactory<UserAccount, String>("Username")); // The tableView searches for a method called getName
+		tcGender.setCellValueFactory(new PropertyValueFactory<UserAccount, String>("gender")); // The tableView searches for a method called getName
+		tcCareer.setCellValueFactory(new PropertyValueFactory<UserAccount, String>("careers"));
+		tcBirthday.setCellValueFactory(new PropertyValueFactory<UserAccount, String>("birthday"));
+		tcBrowser.setCellValueFactory(new PropertyValueFactory<UserAccount, String>("browser"));
+	}
+	
+	public void loadList(String username, String photoPath) throws IOException { // CAMBIAR EL TAMAÑO DEL WINDOW AL VOLVER A RECARGAR ESTE STAGE
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("account-list.fxml"));
 		fxmlLoader.setController(this);
 		Parent register = fxmlLoader.load();
 		mainPane.getChildren().setAll(register);
+		Stage stage = (Stage) mainPane.getScene().getWindow();
+		stage.setHeight(500);
+		stage.setWidth(625);
+		
+		File file = new File(photoPath);
+		usernameLabel.setText(username);
+		userImage.setImage(new Image(file.toURI().toString()));
+		initializeTableView();
+		
 	}
+	
 }

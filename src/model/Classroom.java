@@ -14,7 +14,7 @@ public class Classroom {
 		accounts.add(mockStudent);
 	}
 	
-	public ArrayList<UserAccount> getClassroom() {
+	public ArrayList<UserAccount> getAccounts() {
 		return accounts;
 	}
 }

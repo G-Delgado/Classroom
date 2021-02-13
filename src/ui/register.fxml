@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="478.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="478.0" prefWidth="582.0" style="-fx-background-color: #65E095;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="229.0" layoutY="14.0" text="Join to Classroom">
          <font>
-            <Font name="Franklin Gothic Medium" size="15.0" />
+            <Font name="Franklin Gothic Medium" size="17.0" />
          </font>
       </Label>
       <Label layoutX="195.0" layoutY="31.0" text="Create your account">
@@ -28,13 +28,13 @@
       <RadioButton fx:id="maleBtn" layoutX="212.0" layoutY="209.0" mnemonicParsing="false" text="Male" />
       <RadioButton fx:id="femaleBtn" layoutX="271.0" layoutY="209.0" mnemonicParsing="false" text="Female" />
       <RadioButton fx:id="otherBtn" layoutX="348.0" layoutY="209.0" mnemonicParsing="false" text="Other" />
-      <CheckBox fx:id="softCheck" layoutX="211.0" layoutY="240.0" mnemonicParsing="false" text="Software Engineering" />
-      <CheckBox fx:id="telCheck" layoutX="208.0" layoutY="269.0" mnemonicParsing="false" text="Telematic Engineering" />
-      <CheckBox fx:id="indCheck" layoutX="209.0" layoutY="296.0" mnemonicParsing="false" text="Industrial Engineering" />
-      <DatePicker fx:id="datePicker" layoutX="212.0" layoutY="323.0" />
+      <CheckBox fx:id="softCheck" layoutX="210.0" layoutY="240.0" mnemonicParsing="false" text="Software Engineering" />
+      <CheckBox fx:id="telCheck" layoutX="208.0" layoutY="270.0" mnemonicParsing="false" text="Telematic Engineering" />
+      <CheckBox fx:id="indCheck" layoutX="209.0" layoutY="297.0" mnemonicParsing="false" text="Industrial Engineering" />
+      <DatePicker fx:id="datePicker" editable="false" layoutX="212.0" layoutY="323.0" />
       <ComboBox fx:id="favBrowser" layoutX="211.0" layoutY="367.0" prefWidth="150.0" />
-      <Button layoutX="200.0" layoutY="422.0" mnemonicParsing="false" onAction="#loadLogin" text="Sign In" />
-      <Button layoutX="282.0" layoutY="422.0" mnemonicParsing="false" onAction="#createAccount" text="Create account" />
+      <Button layoutX="200.0" layoutY="422.0" mnemonicParsing="false" onAction="#loadLogin" style="-fx-background-color: #1481DC;" text="Sign In" textFill="WHITE" />
+      <Button layoutX="282.0" layoutY="422.0" mnemonicParsing="false" onAction="#createAccount" style="-fx-background-color: #1481DC;" text="Create account" textFill="WHITE" />
       <Label layoutX="134.0" layoutY="78.0" text="Username:" />
       <Label layoutX="135.0" layoutY="121.0" text="Password:" />
       <Label layoutX="116.0" layoutY="156.0" text="Profile photo:" />
@@ -42,6 +42,6 @@
       <Label layoutX="152.0" layoutY="240.0" text="Career:" />
       <Label layoutX="139.0" layoutY="327.0" text="Birthday:" />
       <Label layoutX="105.0" layoutY="371.0" text="Favorite Browser:" />
-      <Button fx:id="browseBtn" layoutX="377.0" layoutY="152.0" mnemonicParsing="false" onAction="#searchFile" text="Browse" />
+      <Button fx:id="browseBtn" layoutX="377.0" layoutY="152.0" mnemonicParsing="false" onAction="#searchFile" style="-fx-background-color: #1481DC;" text="Browse" textFill="WHITE" />
    </children>
 </Pane>

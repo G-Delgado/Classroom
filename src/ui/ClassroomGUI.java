@@ -47,6 +47,9 @@ public class ClassroomGUI {
 	@FXML
 	private TextField passwordField;
 	
+	@FXML
+	private Label warningLabel;
+	
 	// Register controls
 	
 	@FXML
@@ -111,18 +114,11 @@ public class ClassroomGUI {
 	@FXML
 	private TableColumn<UserAccount, String> tcBrowser;
 	
+	// Constructor
+	
 	public ClassroomGUI(Classroom cr) {
 		classroom = cr;
 	}
-	
-	/*
-	 * 
-	 * 
-	 * 	HACER LOS ALERT Y UNA VIEW DE UN "ABOUT" ;)
-	 * ADEMÁS TENGO QUE HACER QUE LAS PERSONAS LLENEN TODOS LOS CAMPOSSSS
-	 * 
-	 * 
-	 * */
 	
 	@FXML
 	public void loadLogin() throws IOException { // CAMBIAR EL TAMAÑO DEL WINDOW AL VOLVER A RECARGAR ESTA STAGE
@@ -132,6 +128,10 @@ public class ClassroomGUI {
 		
 		mainPane.getChildren().clear();
 		mainPane.getChildren().setAll(login);
+		
+		Stage stage = (Stage) mainPane.getScene().getWindow();
+		stage.setHeight(400);
+		stage.setWidth(544);
 	}
 	
 	@FXML
@@ -157,51 +157,47 @@ public class ClassroomGUI {
 			if (found) {
 				loadList(username, photoPath);
 			} else {
-				// Validar datos erroneos
-				// Validar Strings vacios
-				System.out.println("No tienes los datos que son, cagón!");
-				// Tambien validar si no hay estudiantes aun
+				warningLabel.setText("Datos incorrectos");
 			}
 		}
 	
 	}
 	
 	public void createAccount(ActionEvent event) throws IOException {
-		// Nada de lo que está abajo debería hacerse al momento de darle al botón, si no al cargar el fxml
-		String usernameText = createUsernameText.getText();
-		String passwordText = createPasswordText.getText();
-		String profilePath = profileUrl.getText();
-		System.out.println(datePicker.getValue()); // Hay que validar cuando sea NULL ------- asasas sasasa/////////
-		String date = datePicker.getValue() + "";
-		ArrayList<String> careers = new ArrayList<String>();
-		if (softCheck.isSelected()) {
-			careers.add("Software Engineering");
-		}
-		if (telCheck.isSelected()) {
-			careers.add("Telematic Engineering");
-		}
-		if (indCheck.isSelected()) {
-			careers.add("Industrial Engineering");
-		}
-		String gender = "";
-		if (maleBtn.isSelected()) {
-			gender = "Male";
-		} else if (femaleBtn.isSelected()) {
-			gender = "Female";
-		} else if (otherBtn.isSelected()) {
-			gender = "Other";
-		}
-		gender = gender.replaceAll(" ", "").toUpperCase();
-		String favoriteBrowser = favBrowser.getValue();
-		favoriteBrowser = favoriteBrowser.replaceAll(" ", "").toUpperCase();
-		// NECESITO VALIDAR LO QUE PASA CUANDO FALTA ALGUN DATO
-		if (usernameText.equals("") || passwordText.equals("") || profilePath.equals("") || date == null || careers.size() == 0 || gender.equals("") || favoriteBrowser.equals("")) {
+		if (createUsernameText.getText().equals("") || createPasswordText.getText().equals("") || profileUrl.getText().equals("") || datePicker.getValue() == null || (!softCheck.isSelected() && !indCheck.isSelected() && !telCheck.isSelected()) || (!maleBtn.isSelected() && !femaleBtn.isSelected() && otherBtn.isSelected()) || favBrowser.getValue() == null) {
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setHeaderText(null);
 			alert.setTitle("Validation Error");
 			alert.setContentText("You must fill each field in the form");
 			alert.showAndWait();
 		} else {
+			String usernameText = createUsernameText.getText();
+			String passwordText = createPasswordText.getText();
+			String profilePath = profileUrl.getText();
+			System.out.println(datePicker.getValue());
+			String date = datePicker.getValue() + "";
+			ArrayList<String> careers = new ArrayList<String>();
+			if (softCheck.isSelected()) {
+				careers.add("Software Engineering");
+			}
+			if (telCheck.isSelected()) {
+				careers.add("Telematic Engineering");
+			}
+			if (indCheck.isSelected()) {
+				careers.add("Industrial Engineering");
+			}
+			String gender = "";
+			if (maleBtn.isSelected()) {
+				gender = "Male";
+			} else if (femaleBtn.isSelected()) {
+				gender = "Female";
+			} else if (otherBtn.isSelected()) {
+				gender = "Other";
+			}
+			gender = gender.replaceAll(" ", "").toUpperCase();
+			String favoriteBrowser = favBrowser.getValue();
+			favoriteBrowser = favoriteBrowser.replaceAll(" ", "").toUpperCase();
+			
 			classroom.addStudent(usernameText, passwordText, profilePath, gender, careers, date, favoriteBrowser);
 			loadList(usernameText, profilePath);
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -210,6 +206,7 @@ public class ClassroomGUI {
 			alert.setContentText("The new account has been created");
 			alert.showAndWait();
 		}
+
 		
 	
 	}
@@ -226,21 +223,7 @@ public class ClassroomGUI {
 		profileUrl.setText(path);
 		System.out.println(path);
 	}
-	
-	/*public void openFile(File file) { // Unnecessary --------------
-		final Desktop desktop = Desktop.getDesktop();
-		try {
-            desktop.open(file);
-            System.out.println(file.getName());
-            System.out.println(file.getPath());
-        } catch (IOException ex) {
-            Logger.getLogger(
-                FileChooser.class.getName()).log(
-                    Level.SEVERE, null, ex
-                );
-        }
-	}*/
-	
+
 	@FXML
 	public void loadRegister(ActionEvent event) throws IOException { 
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("register.fxml"));

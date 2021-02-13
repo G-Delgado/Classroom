@@ -121,7 +121,7 @@ public class ClassroomGUI {
 	}
 	
 	@FXML
-	public void loadLogin() throws IOException { // CAMBIAR EL TAMAÑO DEL WINDOW AL VOLVER A RECARGAR ESTA STAGE
+	public void loadLogin() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
 		fxmlLoader.setController(this);
 		Parent login = fxmlLoader.load();
@@ -135,7 +135,7 @@ public class ClassroomGUI {
 	}
 	
 	@FXML
-	public void login(ActionEvent event) throws IOException { // Validate the alert when it is wrong
+	public void login(ActionEvent event) throws IOException {
 		String username = usernameField.getText();
 		String password = passwordField.getText();
 		String photoPath = "";
@@ -167,8 +167,9 @@ public class ClassroomGUI {
 	
 	}
 	
+	@FXML
 	public void createAccount(ActionEvent event) throws IOException {
-		if (createUsernameText.getText().equals("") || createPasswordText.getText().equals("") || profileUrl.getText().equals("") || datePicker.getValue() == null || (!softCheck.isSelected() && !indCheck.isSelected() && !telCheck.isSelected()) || (!maleBtn.isSelected() && !femaleBtn.isSelected() && otherBtn.isSelected()) || favBrowser.getValue() == null) {
+		if (createUsernameText.getText().equals("") || createPasswordText.getText().equals("") || profileUrl.getText().equals("") || datePicker.getValue() == null || (!softCheck.isSelected() && !indCheck.isSelected() && !telCheck.isSelected()) || (!maleBtn.isSelected() && !femaleBtn.isSelected() && !otherBtn.isSelected()) || favBrowser.getValue() == null) {
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setHeaderText(null);
 			alert.setTitle("Validation Error");
@@ -214,6 +215,7 @@ public class ClassroomGUI {
 	
 	}
 	
+	@FXML
 	public void searchFile(ActionEvent event) {
 		String path = "";
 		FileChooser fileChooser = new FileChooser();
@@ -253,7 +255,6 @@ public class ClassroomGUI {
 
 	}
 	
-	@FXML
 	public void initializeTableView() {
 		ObservableList<UserAccount> accounts;
 		accounts = FXCollections.observableArrayList(classroom.getAccounts());
@@ -266,7 +267,7 @@ public class ClassroomGUI {
 		tcBrowser.setCellValueFactory(new PropertyValueFactory<UserAccount, String>("browser"));
 	}
 	
-	public void loadList(String username, String photoPath) throws IOException { // CAMBIAR EL TAMAÑO DEL WINDOW AL VOLVER A RECARGAR ESTE STAGE
+	public void loadList(String username, String photoPath) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("account-list.fxml"));
 		fxmlLoader.setController(this);
 		Parent register = fxmlLoader.load();
@@ -279,6 +280,8 @@ public class ClassroomGUI {
 		usernameLabel.setText(username);
 		userImage.setImage(new Image(file.toURI().toString()));
 		initializeTableView();
+		//accountsTable.prefWidthProperty().bind(stage.widthProperty());
+		accountsTable.prefHeightProperty().bind(stage.heightProperty());
 		
 	}
 	

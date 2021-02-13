@@ -54,6 +54,7 @@ public class UserAccount {
 	}
 	
 	public ArrayList<String> getCareers() {
+		
 		return careers;
 	}
 	

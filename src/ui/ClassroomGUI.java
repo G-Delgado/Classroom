@@ -144,11 +144,10 @@ public class ClassroomGUI {
 		ArrayList<UserAccount> studentList = classroom.getAccounts(); // This probably should not go in here, or not the type we need
 		
 		if (studentList.size() == 0) {
-			System.out.println("Mano, cho tonto, nisiquiera hay cuentas creadas");
+			warningLabel.setText("There are no accounts created yet");
 		} else {
 			for (int i = 0; i < studentList.size() && !found; i++) {
 				if (username.equals(studentList.get(i).getUsername()) && password.equals(studentList.get(i).getPassword())) {
-					System.out.println("LLEGUE AQUI LOCO!!");
 					photoPath = studentList.get(i).getProfilePhotoUrl();
 					found = true;
 				}
@@ -157,6 +156,11 @@ public class ClassroomGUI {
 			if (found) {
 				loadList(username, photoPath);
 			} else {
+				Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert.setHeaderText("Log in incorrect");
+				alert.setTitle(null);
+				alert.setContentText("The username and password given are incorrect");
+				alert.showAndWait();
 				warningLabel.setText("Datos incorrectos");
 			}
 		}
@@ -174,7 +178,6 @@ public class ClassroomGUI {
 			String usernameText = createUsernameText.getText();
 			String passwordText = createPasswordText.getText();
 			String profilePath = profileUrl.getText();
-			System.out.println(datePicker.getValue());
 			String date = datePicker.getValue() + "";
 			ArrayList<String> careers = new ArrayList<String>();
 			if (softCheck.isSelected()) {
@@ -221,7 +224,6 @@ public class ClassroomGUI {
 			//openFile(file);
 		}
 		profileUrl.setText(path);
-		System.out.println(path);
 	}
 
 	@FXML

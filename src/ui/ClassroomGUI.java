@@ -1,11 +1,8 @@
 package ui;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -91,6 +88,7 @@ public class ClassroomGUI {
 	 * 
 	 * 
 	 * 	HACER LOS ALERT Y UNA VIEW DE UN "ABOUT" ;)
+	 * ADEMÁS TENGO QUE HACER QUE LAS PERSONAS LLENEN TODOS LOS CAMPOSSSS
 	 * 
 	 * 
 	 * */
@@ -168,8 +166,14 @@ public class ClassroomGUI {
 		gender = gender.replaceAll(" ", "").toUpperCase();
 		System.out.println("Gender: " + gender);
 		System.out.println("Cuenta creada exitosamente!");
-		classroom.addStudent(usernameText, passwordText, profilePath, gender, careers, date, "BRAVE");
+		String favoriteBrowser = favBrowser.getValue();
+		favoriteBrowser = favoriteBrowser.replaceAll(" ", "").toUpperCase();
+		System.out.println(favBrowser.getValue());
+		classroom.addStudent(usernameText, passwordText, profilePath, gender, careers, date, favoriteBrowser);
+		// NECESITO VALIDAR LO QUE PASA CUANDO FALTA ALGUN DATO
 		loadList();
+		// Al loadList podemos pasarle dos parametros que son el nombre usuario y la foto de perfil.
+		
 	
 	}
 	
@@ -186,7 +190,7 @@ public class ClassroomGUI {
 		System.out.println(path);
 	}
 	
-	public void openFile(File file) { // Unnecessary --------------
+	/*public void openFile(File file) { // Unnecessary --------------
 		final Desktop desktop = Desktop.getDesktop();
 		try {
             desktop.open(file);
@@ -198,7 +202,7 @@ public class ClassroomGUI {
                     Level.SEVERE, null, ex
                 );
         }
-	}
+	}*/
 	
 	@FXML
 	public void loadRegister(ActionEvent event) throws IOException { 
